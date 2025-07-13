@@ -1,7 +1,11 @@
-// create a element one child
-const heading = React.createElement("h1", { id: "heading" }, "hello brother");
+// directly importing react from nodemoudules
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-console.log(heading); //object
+// create a element one child
+// const heading = React.createElement("h1", { id: "heading" }, "hello brother");
+
+// console.log(heading); //object
 
 //nested child or multiple elements
 
