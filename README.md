@@ -1,10 +1,6 @@
-Here's your content converted to **Markdown (MD) format** — suitable for documentation, GitHub README, or any Markdown-supported editor:
+**Date:** 02/10/25
 
----
-
-# React JS 19 –  Roadmap
-
-### Duration: 2 Months
+# React 19 –  Roadmap
 
 **Technologies Covered:**
 
@@ -87,7 +83,7 @@ Limitations of traditional JavaScript/jQuery:
 
 ## React Features
 
-*(You can list the features here when you're ready. Some common ones to get you started):*
+```todo: React Features ```
 
 * Declarative UI
 * Component-Based Architecture
@@ -102,23 +98,135 @@ Limitations of traditional JavaScript/jQuery:
 
 ---
 
---------------------------------------------------------------------------------------------------------------------
+**Date:** 03/10/25
 
-Here’s your entire content converted into clean and structured **Markdown (MD)** format — great for notes, documentation, or course materials.
+# React in Existing Web Application
+
+## 1. Create a New Web Application and Setup Development Environment
+
+- Create a new folder for the application:
+  
+  ```
+  D:\web-app
+  ```
+
+- Open the folder in **VS Code**.
+- Open the terminal inside the project location and run the command:
+
+  ```bash
+  npm init -y
+  ```
+
+  - This generates a `package.json` file.  
+  - `package.json` contains project metadata such as commands, version, license, dependencies, etc.
+
+- Manually add the following files and folders into the project:
+
+  | File/Folder        | Description                                                       |
+  |--------------------|-------------------------------------------------------------------|
+  | `README.md`        | Help document for developers, created by developers.             |
+  | `.gitignore`       | Configures files/folders to ignore when publishing to Git.       |
+  | `public` (folder)  | Contains static resources like HTML, images, documents, etc.     |
+  | `src` (folder)     | Contains dynamic resources like CSS, SCSS, JS, TS, JSX, TSX files.|
+  | `index.html`       | Startup page of the application.                                 |
+
+- Click **Go Live** in VS Code status bar to start the application.
+
+***
+
+## 2. Add a New Webpage
+
+- Add a new page named `home.html` inside the `public` folder.
+
+***
+
+## 3. Add `<noscript>` Element
+
+- Add the HTML `<noscript>` element to check if JavaScript is enabled in the browser.
+
+```html
+<noscript>
+  JavaScript is disabled in your browser.
+</noscript>
+```
+
+***
+
+## 4. Add Container to Actual DOM with `id="root"`
+
+- Container to render the React Virtual DOM elements:
+
+```html
+<div id="root"></div>
+```
+
+***
+
+## 5. Setup React Libraries Using CDN
+
+### Required Libraries
+
+- `react` : Core React library.
+- `react-dom` : For creating and managing Virtual DOM.
+- `babel` : JavaScript compiler.
+
+### Note:
+
+- CDN support is available for React up to version 18 only.  
+- React 19 and above disable CDN integration.
+
+### React 18 CDN Links
+
+Add these inside the HTML `<head>` or before your script:
+
+```html
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+```
+
+### Babel CDN
+
+- Visit [https://babeljs.io](https://babeljs.io) → Docs → Integration Package → `babel/standalone`
+- Copy the standalone CDN and add it below React scripts:
+
+```html
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+```
+
+***
+
+## 6. Create `<script>` Element to Render Virtual DOM
+
+### React up to Version 17
+
+```html
+<script type="text/babel">
+  ReactDOM.render("message or component", document.getElementById("root"));
+</script>
+```
+
+### React 18 & 19
+
+```html
+<script type="text/babel">
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render("Welcome");
+</script>
+```
 
 ---
+**Date:** 04/10/25
 
-# React 18+ Essentials – Setup, JSX, and Components
-
----
+# React 18+ Essentials - Setup, JSX, and Components
 
 ## React Versions
 
 | Version    | Rendering Syntax                         |
 | ---------- | ---------------------------------------- |
 | React ≤ 17 | `ReactDOM.render("component", "target")` |
-| React 18+  |                                          |
-
+| React ≤ 17 | `const root = createRoot(“target”)`      |
+|            | `root.render(“component”);`              | 
+|                                                       |
 ```js
 const root = ReactDOM.createRoot(document.getElementById("target"));
 root.render("component");
@@ -126,7 +234,7 @@ root.render("component");
 
 ---
 
-## Setting Up React (Without CRA)
+## Setup React library for project:
 
 ### 1. Install Required Libraries
 
@@ -351,11 +459,7 @@ function Login() {
 ```
 
 ---
-
-
-
-Here's your full content, clearly converted into **Markdown (MD)** format — suitable for study notes, documentation, or technical blog posts.
-
+**Date:** 05/10/25
 ---
 
 # ✅ Bootstrap Setup + JSX Styling + Netflix UI with React
@@ -385,7 +489,7 @@ npm install bootstrap bootstrap-icons --save
 <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 ```
 
-> ✅ **Note:** Bootstrap 5+ doesn’t require `jQuery`.
+> ✅ **Note:** Bootstrap 5+ doesn’t require `jQuery` explicitly.
 
 ---
 
@@ -675,3 +779,847 @@ npm install bootstrap bootstrap-icons --save
 ```
 
 ---
+
+**Date:** 07/10/25
+
+# React SPA (Single Page Application)
+
+### Setup Steps
+
+1. Open any location of your PC in **Command Prompt / Terminal**.
+2. You can create a React application using various bundling tools:  
+   - Webpack  
+   - Parcel  
+   - Vite  
+
+   These tools scaffold and create a project environment according to developer requirements.
+
+3. Run the following command in the terminal:
+
+```bash
+D:\> npm create vite@latest app_name -- --template react
+```
+
+- **Framework**: React  
+- **Variant**: JavaScript  
+
+4. A folder named **app_name** will be created.  
+5. Open the folder in **Visual Studio Code**.  
+6. Open the terminal inside the project folder location.  
+7. Run the command:
+
+```bash
+npm install
+```
+
+This will install all dependencies required for the React project.
+
+***
+
+### Project Structure
+
+| File / Folder         | Description                                                                 |
+|------------------------|-----------------------------------------------------------------------------|
+| **node_modules**       | All library files installed using NPM.                                     |
+| **public**             | Static resources (HTML, images, docs, videos, JSON).                       |
+| **src**                | Dynamic resources (.js, .jsx, .ts, .tsx, .css, .scss, etc.).               |
+| **.gitignore**         | Folders/files to ignore while publishing to Git.                           |
+| **eslint.config.js**   | JavaScript analysis tool; rules can be set for the project.                 |
+| **index.html**         | Startup page of the application.                                           |
+| **package.json**       | Contains all dependencies installed for the project.                       |
+| **package-lock.json**  | Contains project metadata.                                                  |
+| **README.md**          | Help document for developers by developers.                               |
+| **vite.config.js**     | Bundler configuration (plugins, testing frameworks, compilers, etc.).      |
+
+***
+
+### Run React Project
+
+1. Open terminal in project location.  
+2. Run the command:
+
+```bash
+npm run dev
+```
+
+3. This starts your project on a local server in **development environment**.  
+4. Open the following in any browser:
+
+```
+http://localhost:5173
+```
+
+***
+
+### React Project Flow
+
+1. Client requests the application from browser at `localhost:5173`.  
+2. Application loads **index.html** and renders static DOM into the browser.  
+
+   *Note*: Browser loads any web page using the `DOMContentLoaded` event.  
+
+3. Index page loads **main.jsx** from `src` folder:  
+   - Imports React and ReactDOM libraries.  
+   - Imports `App` component from `app.jsx`.  
+   - Creates a Virtual DOM using `createRoot`.  
+   - Renders `App` component into Virtual DOM.  
+
+```jsx
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
+```
+
+4. **App Component** is the default component provided by React application (`src/app.jsx`):
+
+```jsx
+function App() {
+  return (
+    <div> </div>
+  );
+}
+```
+
+---
+**Date:** 08/10/25
+
+
+# Components in React SPA Environment
+
+### Key Points
+- React uses **JavaScript module system** for components.  
+- A modular approach allows creating application-specific libraries.  
+- Benefits: *reusability, extensibility, separation, testability*.  
+- Makes application lightweight and faster.  
+
+***
+
+### JavaScript Modules
+
+- Every JS file is considered as a **module**.  
+- A module can have variables, functions, and classes.  
+- To use module contents externally, you need **export** and **import**.  
+
+#### Export Syntax
+```javascript
+export function Name() { }
+export const variable = function() { }
+export class Name { }
+```
+
+- Default export:
+```javascript
+function Name() { }
+export default Name;
+```
+
+**Note:** Every module can have only one default export.  
+
+#### Import Syntax
+```javascript
+import { Name } from "module_name";       // Named export
+import Name from "module_name";           // Default export
+```
+
+- Alias usage for ambiguity:
+```javascript
+import { actual as alias } from "module_name";
+```
+
+- Import all members using wildcard:
+```javascript
+import * as library from "module_name";
+
+library.f1()
+library.f2()
+```
+
+***
+
+### Component File Structure
+
+1. All component files must be in **src** folder.  
+2. Every component can have **3 files**:  
+   - `.jsx` → Markup and logic  
+   - `.css` → Styles  
+   - `.test.js` / `.spec.js` → Unit tests  
+
+3. Suggested folder structure:  
+
+```
+src
+└── components
+    └── login
+        ├── login.jsx
+        ├── login.css
+        └── login.test.js
+```
+
+***
+
+### Creating Components
+
+Every component is a function or class, requiring export.  
+
+**Option 1: Named function export**
+```jsx
+export function Login() {
+  return (
+    <div> </div>
+  )
+}
+```
+
+**Option 2: Function expression with default export**
+```jsx
+const Login = function() {
+  return (
+    <div> </div>
+  )
+}
+export default Login;
+```
+
+**Option 3: Arrow function with default export**
+```jsx
+const Login = () => (<div> </div>);
+export default Login;
+```
+
+***
+
+### Importing into `main.jsx`
+
+```jsx
+import { Login } from "./components/login/login";
+
+<StrictMode>
+  <Login />
+</StrictMode>
+```
+
+*Note*: Remove `app.jsx` and `index.css` from `main.jsx` when replacing with Login component.
+
+***
+
+### Running the Application
+
+```bash
+npm run dev
+```
+
+***
+
+### Styling Components
+
+- Keep styles in a separate `login.css`.  
+- Avoid using **type selectors**. Always use **class** or **id**.  
+- Import CSS in the component:  
+
+```jsx
+import "./login.css";
+```
+
+- Use `className` property for CSS classes.
+
+***
+
+### Adding Bootstrap
+
+1. Install Bootstrap and Bootstrap Icons:
+```bash
+npm install bootstrap bootstrap-icons --save
+```
+
+2. Import into **main.jsx**:
+```jsx
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
+```
+
+***
+
+### Example CSS (`login.css`)
+```css
+.login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-style {
+    border: 1px solid gray;
+    padding: 20px;
+    box-shadow: 2px 2px 2px black;
+    border-radius: 10px;
+}
+```
+
+***
+
+### Example Component (`login.jsx`)
+```jsx
+import "./login.css";
+
+export function Login() {
+    return (
+        <div className="login-form">
+            <form className="form-style alert alert-dismissible alert-warning">
+                <h2 className="bi bi-person-circle"> User Login</h2>
+                <button className="btn btn-close" data-bs-dismiss="alert"></button>
+                <dl>
+                    <dt>User Name</dt>
+                    <dd><input type="text" className="form-control" /></dd>
+                    <dt>Password</dt>
+                    <dd><input type="password" className="form-control" /></dd>
+                </dl>
+                <button className="btn btn-warning w-100">Login</button>
+            </form>
+        </div>
+    )
+}
+```
+
+***
+
+### Example Main File (`main.jsx`)
+```jsx
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { Login } from './components/login/login';
+
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle';
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <Login />
+  </StrictMode>
+);
+```
+---
+**Date:** 09/10/25
+
+
+# Data Binding in React
+
+### What is Data Binding?
+- A technique of accessing data from a source and updating it to the UI.  
+- Also the process of identifying changes in the UI and updating them back to the source.  
+- Two types:  
+  - **One-Way Binding**  
+  - **Two-Way Binding**  
+
+- React implicitly supports **One-Way Binding**.  
+- One-Way Binding is more secure and faster, but not ideal for updates from the UI.  
+- Data is bound with UI elements using a **binding expression `{ }`**.  
+
+#### Example
+```javascript
+var username = "John";
+
+<p>Hello! { username }</p>
+<input type="text" value={username} />
+```
+
+**Note:**  
+- Don’t use plain variables in components for storing data.  
+- Variables are immutable, but components need a *mutable* data structure.  
+- Always use **State** for handling data in a component.  
+
+***
+
+### FAQ: What is State and Why Do We Need It?
+
+- Web uses **HTTP** as protocol.  
+- HTTP is **stateless** and cannot remember data between requests.  
+- Hence, various **state management** techniques are required to store and use data across requests.  
+
+***
+
+### State in React Components
+
+- Every React function component has its own **state** when created.  
+- State can store **primitive** and **non-primitive** data types.  
+- You can access state using the **useState() hook**.  
+- Hooks are functions provided by React as services.  
+
+#### Syntax
+```javascript
+const [getter, setter] = useState(any_value);
+```
+
+- **Getter:** Reads and returns a value.  
+- **Setter:** Assigns a new value.  
+
+#### Example
+```javascript
+const [uname, setUname] = useState("John");
+
+<p>{uname}</p>
+```
+
+***
+
+### FAQs on State
+
+1. **Why use `const` for state and not `var` or `let`?**  
+   - State must be initialized and used correctly.  
+   - `var` and `let` allow skipping initialization, hence not recommended.  
+
+2. **If state is declared with `const`, how do we update it?**  
+   - By **re-initializing memory** using the setter function.  
+
+   ```javascript
+   const [uname, setUname] = useState("John");
+
+   setUname = "David";   // Invalid - assignment not allowed
+   setUname("David");    // Valid - assigns new value
+   ```
+
+3. **When to set state?**  
+   - On component **mount** or on specific **events**.  
+
+4. **What is mount?**  
+   - A component phase describing when a component is **loaded**.  
+   - Flow:  
+     ``` 
+     Client → Request → Component → App Creates Component → Mounts Component
+     ```
+
+5. **How to configure mount?**  
+   - Using the **useEffect() hook**.  
+
+   ```javascript
+   useEffect(() => {
+      // execute on mount
+   }, [dependencies]);
+   ```
+
+   - A component mounts **only once after creation**.  
+   - If dependencies are provided, it mounts again when those dependencies change.  
+
+***
+
+### Example: Data Binding with State
+
+**data-binding.jsx**
+```jsx
+import { useEffect, useState } from "react";
+
+export function DataBinding() {
+    const [uname, setUname] = useState("David");
+    const [email, setEmail] = useState("eg:some@gmail.com");
+
+    useEffect(() => {
+        setUname("John");
+        setEmail("david_123@outlook.com");
+    }, []);
+
+    return (
+        <div className="container p-4">
+            <h2>Data Binding</h2>
+            <p>Hello! {uname}</p>
+            <p>Your email {email}</p>
+        </div>
+    );
+}
+```
+---
+
+**Date:** 10/10/25
+
+# Handling Various Data Types in React
+
+
+## 1. Handling Numbers
+
+Numbers in React state behave similarly to JavaScript numbers.
+
+**Examples of number types:**
+- Signed integer: `10`  
+- Unsigned integer: `10`  
+- Floating point: `23.21`  
+- Double: `234.452`  
+- Decimal: `2100.452`  
+- Binary: `0b1010`  
+- Hexadecimal: `0x0101`  
+- Octal: `0o745`  
+- BigInt: `93888111123n`  
+- Exponential: `2e3`  
+
+**Common methods:**  
+- `toFixed()`  
+- `toPrecision()`  
+- `toLocaleString()`  
+
+#### Example
+```jsx
+const [price] = useState(45000.30);
+
+<p>{ price.toFixed(2) }</p>        // 45000.30 with 2 decimal places
+<p>{ price.toPrecision(6) }</p>   // Precision with 6 digits
+```
+
+***
+
+### `toLocaleString()` in Numbers
+
+Formats numbers with regional notations and styles.
+
+```jsx
+{ price.toLocaleString('en-IN') }
+{ price.toLocaleString('en-IN', { style: "currency", currency: "INR" }) }
+```
+
+Other styles:  
+- currency  
+- percentage  
+- unit  
+- decimal  
+
+```jsx
+const [rate] = useState(0.567);
+{ rate.toLocaleString('en-IN', { style: "percent" }) }
+
+const [weight] = useState(75);
+{ weight.toLocaleString('en-IN', { style: "unit", unit: "kilogram" }) }
+```
+
+**Notations:**  
+- compact  
+- scientific  
+- engineering  
+
+```jsx
+const [views] = useState(4500000);
+{ views.toLocaleString("en-IN", { notation: "compact" }) }
+```
+
+***
+
+### Number Utilities
+- **Parsing:**
+```javascript
+parseInt("230")   // 230
+parseFloat("23.56") // 23.56
+```
+
+- **Verification:**
+```javascript
+isNaN("abc") // true
+```
+
+- **Fractional Digits example:**
+```jsx
+const [price] = useState(74900);
+{ price.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0, maximumFractionDigits: 0 }) }
+```
+
+***
+
+## 2. Handling Boolean
+
+- JavaScript Boolean values: `true`, `false`.  
+- React can’t directly display booleans, so convert them to strings or JSX conditions.  
+
+```jsx
+const [stock] = useState(true);
+
+<p>{ stock === true ? "true" : "false" }</p>
+```
+
+**Note:** JSX does not allow statements inside `{ }`, only expressions.
+
+***
+
+## 3. Handling Strings
+
+- Defined using:  
+  - Double quotes `" "`  
+  - Single quotes `' '`  
+  - Backticks `` ` ` ``  
+
+- Backticks allow **JavaScript string binding expression `${ }`**.  
+- React binding uses **`{ }`**.  
+
+#### Example
+```jsx
+const [errorClass] = useState("text-danger");
+
+// Traditional string concatenation
+<p className={"border border-1 " + errorClass}>Text</p>
+
+// ES6 template string
+<p className={`border border-1 ${errorClass}`}>Text</p>
+```
+
+### Common String Methods
+- `toUpperCase()` / `toLowerCase()`  
+- `startsWith()` / `endsWith()`  
+- `length`  
+- `slice()` / `substring()` / `substr()`  
+- `replace()` / `replaceAll()`  
+- `match()` / `includes()`  
+- `charAt()` / `charCodeAt()`  
+- `indexOf()` / `lastIndexOf()`  
+- `trim()` / `trimStart()` / `trimEnd()`  
+
+***
+
+## 4. Null and Undefined
+
+- Same as JavaScript → `null`, `undefined`.  
+- Used for uninitialized or absent values.  
+
+***
+**Date:** 12/10/25
+
+
+
+## 5. Arrays and Objects
+
+
+### Array Type
+
+- Array configuration is the same as in JavaScript.
+- Array methods also behave identically.
+
+### Syntax for Array Configuration
+```js
+var values = [];
+var values = new Array();
+```
+
+### Common Array Manipulation Methods
+- `push()`, `pop()`, `shift()`, `splice()`, `unshift()`, `map()`, `forEach()`, `find()`, `filter()`, etc.
+
+### Reading Elements in React
+React recommends using the `map()` method, a JavaScript array method optimized for reading elements asynchronously.
+
+```jsx
+collection.map(function(value, index) { 
+  // your code
+});
+```
+
+Or with React state:
+
+```jsx
+const [collection] = useState([]);
+
+<ol>
+  {
+    collection.map((value, index) => <li key={index}>{value}</li>)
+  }
+</ol>
+```
+
+### Keys in Lists
+
+- Every repeating element must have a **unique key**, specified via the `key` property.
+
+```jsx
+<li key={index}>{value}</li>
+<li key={value}>{value}</li>  // only if `value` is guaranteed unique
+```
+
+- Keys uniquely identify elements for operations like edit, read, and delete.
+
+### Updating Arrays in State
+
+- Arrays cannot be mutated directly; use setter functions.
+- Setter can reinitialize array or push, unshift, splice new values immutably.
+
+```js
+const [collection, setCollection] = useState([]);
+
+setCollection([newValue]);
+setCollection(prev => [...prev, newValue]); // recommended
+
+// Incorrect — do NOT do this:
+setCollection.push(newValue);
+```
+
+***
+
+### Example: Array Binding (`data-binding.jsx`)
+
+```jsx
+import { useState } from "react";
+
+export function DataBinding() {
+    const [categories] = useState(['All', 'Electronics', 'Fashion', 'Footwear']);
+
+    return (
+        <div className="container p-4">
+            <h2>Array</h2>
+            <nav>
+                {categories.map(category =>
+                    <button className="btn mx-4 btn-warning" key={category}>
+                        {category}
+                    </button>
+                )}
+            </nav>
+            <ol>
+                {categories.map((category, index) =>
+                    <li key={index}>{category}</li>
+                )}
+            </ol>
+            <select>
+                {categories.map(category =>
+                    <option key={category}>{category}</option>
+                )}
+            </select>
+            <ul className="list-unstyled">
+                {categories.map(category =>
+                    <li key={category}>
+                        <input type="checkbox" />
+                        <label>{category}</label>
+                    </li>
+                )}
+            </ul>
+        </div>
+    );
+}
+```
+
+***
+
+  ## Object Type
+
+- Concept of objects introduced by Alan Kay in the 1960s.
+- Johan Nygaard and Ole-Johan Dahl developed OOP; SIMULA 67 was the first OOP language.
+- Objects keep related data and logic together.
+- Trygve Reenskaug designed the MVC pattern for code separation.
+- In JavaScript, objects are collections of key-value pairs.
+- Keys are strings, and values can be any type.
+
+### Syntax for Objects
+
+```js
+{
+  key: value,
+  key2: value2
+}
+```
+
+- Access object properties using the dot operator:
+
+```js
+const [obj] = useState({ key: value });
+
+{obj.key}
+```
+
+- Common object operations in JavaScript:
+
+  - `Object.keys(object)` — returns all keys.
+  - `delete object.key` — removes a key.
+  - `key in object` — verifies if key exists.
+
+### Example: Accessing Object Keys in JSX
+
+```jsx
+Object.keys(object_name).map(key =>
+  <li key={key}>{key}</li>
+);
+```
+
+***
+
+### Example: Object Binding and Nested Data (`data-binding.jsx`)
+
+```jsx
+import { useState } from "react";
+
+export function DataBinding() {
+    const [product] = useState({
+        Name: 'Samsung TV',
+        Price: 45000,
+        ShippedTo: ['Delhi', 'Hyd'],
+        Rating: { Rate: 4.3, Count: 600 }
+    });
+
+    return (
+        <div className="container p-4">
+            <h3>Products Table</h3>
+            <table className="table bg-dark text-white">
+                <thead>
+                    {Object.keys(product).map(key =>
+                        <th key={key}>{key}</th>
+                    )}
+                </thead>
+            </table>
+
+            <h3>Product Details</h3>
+            <dl>
+                <dt>Name</dt>
+                <dd>{product.Name}</dd>
+                <dt>Price</dt>
+                <dd>{product.Price.toLocaleString('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 })}</dd>
+                <dt>Shipped To</dt>
+                <dd>
+                    <ul>
+                        {product.ShippedTo.map(city => <li key={city}>{city}</li>)}
+                    </ul>
+                </dd>
+                <dt>Ratings</dt>
+                <dd>
+                    <span className="badge bg-success rounded p-2">
+                        {product.Rating.Rate} <span className="bi bi-star-fill"></span>
+                    </span>
+                    <span className="fw-bold text-secondary">{product.Rating.Count} ratings</span>
+                </dd>
+            </dl>
+        </div>
+    );
+}
+```
+
+***
+
+### Example: Array of Objects Binding
+
+```jsx
+import { useState } from "react";
+
+export function DataBinding() {
+    const [products] = useState([
+        { Name: 'Samsung TV', Price: 45000 },
+        { Name: 'Mobile', Price: 24000 },
+        { Name: 'Watch', Price: 13000 }
+    ]);
+
+    return (
+        <div className="container p-4">
+            <h2>Product Table</h2>
+            <table className="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {products.map(product =>
+                        <tr key={product.Name}>
+                            <td>{product.Name}</td>
+                            <td>{product.Price}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
+        </div>
+    );
+}
+```
+
+
+**Date:** 15/10/25
+
