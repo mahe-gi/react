@@ -1623,3 +1623,250 @@ export function DataBinding() {
 
 **Date:** 15/10/25
 
+
+
+# Date Type in React
+
+Date and Time values can be handled using the JavaScript `Date()` constructor.  
+It allows loading the default system date or any specific date into memory.
+
+**Syntax:**
+```js
+const [ today ] = useState(new Date('year-month-day hrs:min:sec.milliSec'));
+```
+
+All **date methods** are the same as in JavaScript:
+- `getHours()`    `setHours()`
+- `getMinutes()`   `setMinutes()`
+- `getSeconds()`   `setSeconds()`
+- `getMilliseconds()` `setMilliseconds()`
+- `getDay()`     `setDate()`
+- `getDate()`     `setMonth()`
+- `getMonth()`     `setYear()`
+- `getFullYear()`
+- `toLocaleDateString()`
+- `toDateString()`
+- `toLocaleTimeString()`
+- `toTimeString()`
+
+**Example (`data-binding.jsx`):**
+```js
+import { useEffect, useState } from "react";
+
+export function DataBinding() {
+  const [today, setToday] = useState(new Date('2025-09-17'));
+  return (
+    <div className="container p-4">
+      <h2>Data Binding</h2>
+      <p>{today.toDateString()}</p>
+    </div>
+  );
+}
+```
+
+***
+
+## JavaScript Date Libraries in React
+
+React supports popular JS date/time libraries, including:
+
+- **moment**
+- **dayjs**
+- **luxon**
+
+### Setting up Moment in React
+
+1. **Install moment:**
+   ```sh
+   npm install moment --save
+   ```
+
+2. **Import moment:**
+   ```js
+   import moment from "moment";
+   ```
+
+3. **Format dates with moment:**
+   ```js
+   const [today] = useState(new Date());
+   { moment(today).format('dddd DD, MMMM YYYY') }
+   ```
+
+#### Format Tokens:
+- `ddd` short weekday name
+- `dddd` long weekday name
+- `DD`  date number
+- `MM`  month number
+- `MMM` short month name
+- `MMMM` long month name
+- `YY`  short year
+- `YYYY` long year
+
+Refer to [momentjs.com](https://momentjs.com/) for more format options.
+
+### Example Using moment
+```js
+import { useEffect, useState } from "react";
+import moment from "moment";
+
+export function DataBinding() {
+  const [today, setToday] = useState(new Date('2025-09-17'));
+  return (
+    <div className="container p-4">
+      <h2>Data Binding</h2>
+      <p>{moment(today).format('dddd DD, MMMM YYYY')}</p>
+    </div>
+  );
+}
+```
+
+***
+
+# Regular Expression in React
+
+A **regular expression** (regex) is a set of meta characters and quantifiers, enclosed in `/ /`.  
+It is used with the String `match()` method for validation.
+
+**Syntax:**
+```js
+const [ pattern ] = useState( /your_expression/ );
+
+// Usage:
+{ (string.match(pattern)) ? True : False }
+```
+
+### Example: Validate Indian Mobile Number
+
+```js
+import { useEffect, useState } from "react";
+import moment from "moment";
+
+export function DataBinding() {
+  const [pattern] = useState(/\+91\d{10}/);
+  const [mobile] = useState('+919876543210');
+  return (
+    <div className="container p-4">
+      <h2>Data Binding</h2>
+      <p>{(mobile.match(pattern)) ? "Verified" : "Invalid Mobile"}</p>
+    </div>
+  );
+}
+```
+
+***
+
+# Fetching Data from JSON File
+
+JavaScript’s **XMLHttpRequest** object enables AJAX calls from the browser.
+
+## About XMLHttpRequest
+- JavaScript object for AJAX requests.
+- Synchronous by default; must be configured for async.
+- Returns data in XML or Text format.
+- Explicit conversion required for other types (e.g., JSON).
+- Not recommended due to security (XSS, XSRF, CORS) and error handling issues.
+
+### XMLHttpRequest Phases
+- 1 Initial
+- 2 Success
+- 3 Complete
+- 4 Ready
+
+### Basic Flow
+
+```js
+var http = new XMLHttpRequest();
+http.open("method", "url", asyncBoolean);
+http.send();
+
+http.onreadystatechange = function() {
+  if (http.readyState === 4) {
+    // handle response
+    http.responseText
+  }
+}
+```
+
+#### Example Product Data (`public/product.json`):
+```json
+{
+  "title": "Apple iPhone 16 (Pink, 256 GB)",
+  "price": 71999,
+  "image": "iphone-pink.png",
+  "rating": { "rate":4.9, "ratings":19106, "reviews":793 },
+  "offers": [
+    "Bank Offer10% Off on Supermoney UPI. Max discount of ₹50. Minimum order value of ₹250.T&C",
+    "Bank Offer5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarterT&C",
+    "Bank Offer5% cashback on Flipkart SBI Credit Card upto ₹4,000 per calendar quarterT&C",
+    "Special PriceGet extra ₹27901 off (price inclusive of cashback/coupon)T&C"
+  ] 
+}
+```
+
+### Example: Fetch and Display JSON (`components/flipkart.jsx`)
+
+```js
+import { useEffect, useState } from "react";
+
+export function Flipkart() {
+  const [product, setProduct] = useState({
+    title: null,
+    price: 0,
+    image: null,
+    rating: { rate: 0, ratings: 0, reviews: 0 },
+    offers: []
+  });
+
+  function LoadProduct() {
+    var http = new XMLHttpRequest();
+    http.open("get", "product.json", true);
+    http.send();
+    http.onreadystatechange = function() {
+      if (http.readyState === 4) {
+        setProduct(JSON.parse(http.responseText));
+      }
+    }
+  }
+
+  useEffect(() => {
+    LoadProduct();
+  }, []);
+
+  return (
+    <div>
+      <div className="row mt-4">
+        <div className="col-3">
+          <img src={product.image} width="100%" />
+        </div>
+        <div className="col-9">
+          <div className="fs-5">{product.title}</div>
+          <div className="mt-2">
+            <span className="badge bg-success text-white rounded">
+              {product.rating.rate} <span className="bi bi-star-fill"></span>
+            </span>
+            <span className="mx-2 fw-bold text-secondary">
+              {product.rating.ratings.toLocaleString('en-in')} ratings & {product.rating.reviews} reviews
+            </span>
+          </div>
+          <div className="my-2 fs-1 fw-bold">
+            {product.price.toLocaleString('en', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 })}
+          </div>
+          <div className="mt-4">
+            <h6>Available Offers</h6>
+            <ul className="list-unstyled">
+              {
+                product.offers.map(offer =>
+                  <li className="bi bi-tag-fill text-success my-3" key={offer}>
+                    <span className="text-secondary"> {offer} </span>
+                  </li>
+                )
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+-----------
