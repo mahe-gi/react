@@ -780,7 +780,7 @@ npm install bootstrap bootstrap-icons --save
 
 ---
 
-**Date:** 07/10/25
+**Date:** 08/10/25
 
 # React SPA (Single Page Application)
 
@@ -883,7 +883,7 @@ function App() {
 ```
 
 ---
-**Date:** 08/10/25
+**Date:** 09/10/25
 
 
 # Components in React SPA Environment
@@ -1103,7 +1103,7 @@ createRoot(document.getElementById('root')).render(
 );
 ```
 ---
-**Date:** 09/10/25
+**Date:** 10/10/25
 
 
 # Data Binding in React
@@ -1232,7 +1232,7 @@ export function DataBinding() {
 ```
 ---
 
-**Date:** 10/10/25
+**Date:** 11/10/25
 
 # Handling Various Data Types in React
 
@@ -1755,6 +1755,8 @@ export function DataBinding() {
 
 ***
 
+
+
 # Fetching Data from JSON File
 
 JavaScript’s **XMLHttpRequest** object enables AJAX calls from the browser.
@@ -1869,4 +1871,1334 @@ export function Flipkart() {
   );
 }
 ```
------------
+----
+
+**Date**:16/10/2025
+
+
+# AJAX in React – Fetch vs Axios
+
+## XMLHttpRequest & JSON
+
+- **XMLHttpRequest** → Older way of AJAX in JavaScript.  
+- **JSON** → Format used for structured data exchange.  
+
+---
+
+## Fetch API & Promise  
+
+- `fetch()` is a **JavaScript Promise**.  
+- Promise is an **asynchronous function**.  
+- Promise uses 3 callbacks:  
+  - `then()` → on success  
+  - `catch()` → on failure  
+  - `finally()` → always  
+
+### Characteristics:
+- Returns response in **binary format**.  
+- Requires **explicit data conversion** (like `.json()`).  
+- Better than `XMLHttpRequest` in **security & error handling**.  
+- It is a **JavaScript browser window API** method.  
+
+### Syntax:
+```javascript
+fetch("url")
+   .then(function(response){})
+   .catch(function(error){})
+   .finally(function(){});
+````
+
+---
+
+## Example: Fetch Product (Flipkart Clone)
+
+### 📂 Public/product.json
+
+```json
+{
+  "title": "Apple iPhone 16 (Pink, 256 GB)",
+  "price": 71999,
+  "image": "iphone-pink.png",
+  "rating": { "rate": 4.9, "ratings": 19106, "reviews": 793 },
+  "offers": [
+    "Bank Offer10% Off on Supermoney UPI. Max discount of ₹50. Minimum order value of ₹250.T&C",
+    "Bank Offer5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarterT&C",
+    "Bank Offer5% cashback on Flipkart SBI Credit Card upto ₹4,000 per calendar quarterT&C",
+    "Special PriceGet extra ₹27901 off (price inclusive of cashback/coupon)T&C"
+  ]
+}
+```
+
+### 📂 src/components/flipkart.jsx
+
+```jsx
+import { useEffect, useState } from "react";
+
+export function Flipkart(){
+    const [product, setProduct] = useState({
+        title:null, price:0, image:null, 
+        rating:{rate:0, ratings:0, reviews:0}, 
+        offers:[]
+    });
+
+    function LoadProduct(){
+       fetch("product.json")
+       .then(response => response.json())
+       .then(product => setProduct(product));
+    }
+
+    useEffect(()=> { LoadProduct(); },[]);
+
+    return(
+        <div className="row mt-4">
+            <div className="col-3">
+                <img src={product.image} width="100%" />
+            </div>
+            <div className="col-9">
+                <div className="fs-5">{product.title}</div>
+                <div className="mt-2">
+                    <span className="badge bg-success text-white rounded">
+                        {product.rating.rate} <span className="bi bi-star-fill"></span>
+                    </span>
+                    <span className="mx-2 fw-bold text-secondary">
+                        {product.rating.ratings.toLocaleString('en-in')} ratings & {product.rating.reviews} reviews
+                    </span>
+                </div>
+                <div className="my-2 fs-1 fw-bold">
+                    {product.price.toLocaleString('en', {style:'currency', currency:'INR', minimumFractionDigits:0})}
+                </div>
+                <div className="mt-4">
+                    <h6>Available Offers</h6>
+                    <ul className="list-unstyled">
+                        {product.offers.map(offer =>
+                            <li className="bi bi-tag-fill text-success my-3" key={offer}>
+                                <span className="text-secondary">{offer}</span>
+                            </li>
+                        )}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    )
+}
+```
+
+---
+
+## Issues with Fetch
+
+* Requires **explicit conversions** (`response.json()` etc.)
+* Firewall may block **COM to Marshal** (binary ↔ object conversion).
+* **CORS** issues.
+* Limited in **security & error handling**.
+
+---
+
+# React 3rd Party Libraries for AJAX
+
+* **Axios**
+* **WHATWG Fetch**
+* **jQuery AJAX**
+
+---
+
+## Axios
+
+* **Promise-based AJAX library**.
+* Supports **client-side & server-side**.
+* Better in **error handling & security**.
+* Handles **CORS, XSRF, XSS**.
+* Supports **canceling requests**.
+* Handles **multiple requests simultaneously**.
+* Uses **implicit data transformations** (no need for `response.json()`).
+
+### Installation
+
+```bash
+npm install axios --save
+```
+
+### Import
+
+```javascript
+import axios from "axios";
+```
+
+### Methods
+
+* `axios.get()` → Fetch data
+* `axios.post()` → Save new data
+* `axios.put()` → Update
+* `axios.patch()` → Partial update
+* `axios.delete()` → Delete
+
+### Syntax
+
+```javascript
+axios.get("url")
+    .then(function(response){ })
+    .catch(function(error){ })
+    .finally(function(){ });
+```
+
+### Response Object
+
+* `headers` → request type, data type
+* `data` → response data
+* `status` → 200, 404, etc.
+* `statusText` → OK, Not Found
+
+---
+
+## Example: Axios (Flipkart Clone)
+
+```jsx
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+export function Flipkart(){
+    const [product, setProduct] = useState({
+        title:null, price:0, image:null,
+        rating:{rate:0, ratings:0, reviews:0}, 
+        offers:[]
+    });
+
+    function LoadProduct(){
+        axios.get("product.json")
+        .then(response => setProduct(response.data));
+    }
+
+    useEffect(()=> { LoadProduct(); },[]);
+
+    return(
+        <div className="row mt-4">
+            <div className="col-3">
+                <img src={product.image} width="100%" />
+            </div>
+            <div className="col-9">
+                <div className="fs-5">{product.title}</div>
+                <div className="mt-2">
+                    <span className="badge bg-success text-white rounded">
+                        {product.rating.rate} <span className="bi bi-star-fill"></span>
+                    </span>
+                    <span className="mx-2 fw-bold text-secondary">
+                        {product.rating.ratings.toLocaleString('en-in')} ratings & {product.rating.reviews} reviews
+                    </span>
+                </div>
+                <div className="my-2 fs-1 fw-bold">
+                    {product.price.toLocaleString('en', {style:'currency', currency:'INR', minimumFractionDigits:0})}
+                </div>
+                <div className="mt-4">
+                    <h6>Available Offers</h6>
+                    <ul className="list-unstyled">
+                        {product.offers.map(offer =>
+                            <li className="bi bi-tag-fill text-success my-3" key={offer}>
+                                <span className="text-secondary">{offer}</span>
+                            </li>
+                        )}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    )
+}
+```
+
+---
+
+# API (Application Programming Interface)
+
+## Distributed Computing
+
+* Communication between applications on **different machines**.
+* Communication between **objects in different processes** on same machine.
+
+---
+
+## Popular Distributed Technologies
+
+* **CORBA** → Common Object Request Broker Architecture (14+ languages)
+* **DCOM** → Distributed Component Object Model (Visual Basic)
+* **RMI** → Remote Method Invocation (Java/J2EE)
+* **EJB** → Enterprise Java Beans (Java)
+* **Remoting** → .NET
+* **Webservice** → All technologies
+
+---
+
+## Communication Specifications
+
+* **SOAP**
+* **REST**
+* **JSON**
+
+### SOAP
+
+* **Service-Oriented Architecture Protocol**
+* Consumer sends XML request:
+
+```xml
+<Movies>
+  <Movie>
+    <Generic>Thriller</Generic>
+  </Movie>
+</Movies>
+```
+
+* Provider responds in XML.
+
+### REST
+
+* **Representational State Transfer**
+* Consumer sends simple query request:
+
+```http
+https://netflix.in/movies?generic=thriller
+```
+
+* Provider responds with JSON/XML:
+
+```json
+[
+  { "title": "A", "generic": "thriller" }
+]
+```
+
+### JSON
+
+* **JavaScript Object Notation**
+* Consumer → sends JSON
+* Provider → responds with JSON
+
+---
+
+## Issues with Web Service
+
+* Runs only on **HTTP server**
+* Uses **SOAP only**
+* Response always in **XML**
+
+---
+
+## Web API
+
+* Lightweight & flexible alternative to web services.
+* Uses **REST + JSON** widely.
+
+
+
+---
+**Date:** 17/10/25
+
+# Distributed Computing
+
+## Distributed Technologies  
+
+## Communication Specifications  
+- SOAP  
+- REST  
+- JSON  
+
+## Issues with Web Service  
+
+---
+
+## FAQ: What is API?
+- **Application Programming Interface**  
+- It refers to business logic that handles communication between client, server, and database.  
+- It uses REST for communication.  
+- It is cross-platform and can run on any device.  
+
+**Example:**  
+Nasa API → [api.nasa.gov](https://api.nasa.gov)  
+
+```url
+https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=DEMO_KEY
+````
+
+API Key: `FJfuJp29jaHFRmmsz1MwNV0m3a2AbBkUdFiNyhoI`
+
+---
+
+## Example: Tabular Data - Grid (nasa.jsx)
+
+```jsx
+import axios from "axios";
+import { useEffect, useState } from "react"
+
+export function Nasa(){
+
+    const [marsObject , setMarsObject] = useState({photos:[]});
+
+    function LoadData(){
+        axios.get('https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=FJfuJp29jaHFRmmsz1MwNV0m3a2AbBkUdFiNyhoI')
+        .then(response=>{
+            setMarsObject(response.data);
+        })
+    }
+    useEffect(()=>{
+        LoadData();
+    },[])
+
+    return(
+        <div className="container-fluid">
+            <h2>Mars Rover Photos Table</h2>
+            <table className="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Photo Id</th>
+                        <th>Preview</th>
+                        <th className="bi bi-camera"> Camera</th>
+                        <th className="bi bi-rocket"> Rover </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {
+                        marsObject.photos.map(item=>
+                            <tr key={item.id}>
+                                <td>{item.id}</td>
+                                <td> <img width="100" height="100" src={item.img_src} /> </td>
+                                <td> {item.camera.full_name} </td>
+                                <td> {item.rover.name} </td>
+                            </tr>
+                        )
+                    }
+                </tbody>
+            </table>
+        </div>
+    )
+}
+```
+
+---
+
+## Example: Nasa Mars Rover Photos - Card Style
+
+```jsx
+import axios from "axios";
+import { useEffect, useState } from "react"
+
+export function Nasa(){
+
+    const [marsObject , setMarsObject] = useState({photos:[]});
+
+    function LoadData(){
+        axios.get('https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=FJfuJp29jaHFRmmsz1MwNV0m3a2AbBkUdFiNyhoI')
+        .then(response=>{
+            setMarsObject(response.data);
+        })
+    }
+    useEffect(()=>{
+        LoadData();
+    },[])
+
+    return(
+        <div className="container-fluid">
+            <h2>Mars Rover Photos Cards</h2>
+            <main className="d-flex flex-wrap">
+                {
+                    marsObject.photos.map(item=>
+                        <div key={item.id} style={{width:'250px'}} className="card m-2 p-2">
+                            <img src={item.img_src} className="card-img-top" height="120" />
+                            <div className="card-header">
+                                <div className="fs-4 fw-bold">{item.id}</div>
+                            </div>
+                            <div className="card-body">
+                                <dl>
+                                    <dt className="bi bi-camera"> Camera</dt>
+                                    <dd>{item.camera.full_name}</dd>
+                                    <dt className="bi bi-rocket"> Rover </dt>
+                                    <dd> {item.rover.name} </dd>
+                                </dl>
+                            </div>
+                            <div>
+                                <a href={item.img_src} target="_blank" className="bi bi-eye-fill btn btn-primary w-100"> Preview </a>
+                            </div>
+                        </div>
+                    )
+                }
+            </main>
+        </div>
+    )
+}
+```
+
+---
+
+# Two Way Data Binding
+
+* It is a data binding technique used in web applications.
+* It identifies the changes in value and updates into source.
+* It requires events that trigger actions and update the data.
+* React supports only **one-way binding** implicitly, hence two-way-binding requires a lot of event binding.
+
+---
+
+# Event Binding
+
+### 1. What is Event?
+
+* Event is a message sent by sender to its subscriber in order to notify change.
+* Event uses a “delegate” mechanism (function pointer).
+* It follows the **Observer Pattern**, which is a communication pattern.
+
+**Syntax:**
+
+```js
+function InsertClick() { }     // Subscriber  
+<button onclick="InsertClick()">  // Sender
+```
+
+* Subscriber defines the actions to perform.
+* Sender notifies the subscriber.
+
+---
+
+### 2. What is Event Handler?
+
+* Events are triggers configured for any element.
+* If you want an event to configure in design then it requires a handler to attach.
+
+Examples:
+
+* `click` → event
+* `on` → handler
+* `onclick` → event handler
+
+```html
+<button onclick="function(){}">Click</button>
+```
+
+---
+
+### 3. What is Event Listener?
+
+* It is used to configure events dynamically for any element.
+
+**Syntax:**
+
+```js
+document.querySelector("button").addEventListener("event", function(){
+   // action
+})
+```
+
+---
+
+### Example 1
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+      <script>
+          function bodyload(){
+            document.querySelector("button").addEventListener("click",()=>{
+              document.write("Inserted");
+          })  
+          }
+      </script>
+</head>
+<body onload="bodyload()">
+      <button onclick="">Insert</button>
+</body>
+</html>
+```
+
+---
+
+### Example 2
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+      <script>
+          function bodyload(){
+               var button = document.createElement("button");
+               button.innerHTML = "Insert";
+               button.addEventListener("click", ()=>{
+                    document.write("Record Inserted");
+               })
+               document.querySelector("body").appendChild(button);
+          }
+      </script>
+</head>
+<body onload="bodyload()">
+</body>
+</html>
+```
+
+
+
+---
+
+**Date:** 18/10/25
+
+
+# Two Way Binding  
+
+- It is a data binding technique used in web applications.  
+- It identifies the changes in value and updates into source.  
+- It requires events that trigger actions and update the data.  
+- React supports only **one-way-binding** implicitly, hence two-way-binding requires a lot of event binding.  
+
+---
+
+# Event Binding  
+
+## 1. What is Event?  
+- **Observer**  
+- **Delegate**  
+- **Sender**  
+- **Subscriber**  
+
+---
+
+## 2. What is Event Handler?  
+- Events are triggers configured for any element.  
+- If you want an event to configure in design then it requires a handler to attach.  
+
+---
+
+## 3. What is Event Listener?  
+- It is used to configure events dynamically for any element.  
+
+---
+
+## 4. What are Event Arguments?  
+- Arguments are used to handle payload.  
+- Payload is the data carried from one location to another.  
+- JavaScript provides **2 default arguments**:  
+  - `this` → Information related to the current element (id, name, className, src, href, width, height, border, etc.)  
+  - `event` → Information related to the current event (clientX, clientY, keyCode, charCode, shiftKey, ctrlKey, etc.)  
+
+### Syntax (Handler with default args)
+```js
+function ClickHandler(obj, e) {
+}
+<button onclick="ClickHandler(this, event)">Click</button>
+````
+
+* Event handler can use **2 default arguments**.
+* Event listeners can use **only one default argument**, which refers to `event`.
+* However, listener event arguments can handle both element and event details.
+
+### Syntax (Listener with event object)
+
+```js
+document.querySelector("button").addEventListener("click", function(e){
+    e.clientX;       // event details
+    e.clientY;       
+    e.keyCode;
+
+    e.target.id;     // element details
+    e.target.name;
+    e.target.className;
+})
+```
+
+### Example (Listener with event + element details)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Event Arguments Example</title>
+      <script>
+               function bodyload(){
+                    var button = document.createElement("button");
+                    button.innerHTML = "Insert";
+                    button.id="btnInsert";
+                    button.name="Insert";
+                    button.addEventListener("click", function(e){
+                         console.log(`${e.clientX}\n${e.shiftKey}\n${e.target.name}\n${e.target.id}`);
+                    })
+                    document.querySelector("body").appendChild(button);
+               }
+      </script>
+</head>
+<body onload="bodyload()">
+</body>
+</html>
+```
+
+---
+
+### Custom Arguments
+
+* Event handler can handle custom arguments.
+* Custom args can be any type (Primitive or Non-Primitive).
+
+**Syntax:**
+
+```js
+function handler(obj, e, ...params) {
+}
+<button onclick="handler(this, event, 1, true, [], { })">Click</button>
+```
+
+**Example:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Custom Event Arguments</title>
+      <script> 
+          function DetailsClick(obj, e , ...product){
+               console.log(product);
+               console.log(obj.id);
+               console.log(e.clientX);
+          }
+      </script>
+</head>
+<body>
+   <button id="btnDetails" 
+           onclick="DetailsClick(this, event, 1, 'TV', 34000, ['Delhi','Hyd'], {rating:4.5})">
+           Product Details
+   </button>
+</body>
+</html>
+```
+
+---
+
+## 5. What is Event Propagation (Event Bubbling)?
+
+* It is a mechanism where the child event simulates the parent events.
+* You can prevent propagation by using `stopPropagation()`.
+
+**Syntax:**
+
+```js
+function child_handler(e) {
+    e.stopPropagation();
+}
+<child_element onclick="child_handler(event)">
+```
+
+**Example:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Event Bubbling</title>
+     <script>
+          function NavbarClick(){
+               alert("navbar clicked");
+          }
+          function SearchClick(e){
+               e.stopPropagation();
+               alert("search clicked");
+          }
+     </script>
+</head>
+<body>
+     <nav onclick="NavbarClick()" style="border:1px solid black; padding:10px">
+          <h3>Amazon</h3>
+          <button onclick="SearchClick(event)">Search</button>
+     </nav>
+</body>
+</html>
+```
+
+---
+
+## 6. How to Stop Default Event Actions?
+
+* HTML elements have pre-defined functionality.
+* They perform the default action along with specified action.
+* You can stop the default action by using `preventDefault()`.
+
+**Syntax:**
+
+```js
+function submit(e) {
+   e.preventDefault();
+}
+<form onsubmit="submit(event)">
+```
+
+**Example:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Prevent Default Example</title>
+     <script>
+          function SubmitClick(e)
+          {    
+               e.preventDefault();
+               alert('Form data submitted to API');
+          }
+     </script>
+</head>
+<body>
+     <form onsubmit="SubmitClick(event)">
+          <input type="text" required name="user"> <button>Submit</button>
+     </form>
+</body>
+</html>
+```
+
+---
+
+## 7. What is Event Looping?
+
+* Event looping is a mechanism of executing tasks in a specific order.
+* Every event follows the same order:
+
+1. **General Task**
+2. **Micro Task** (Promise)
+3. **Asynchronous** (Timeout)
+
+**Example:**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Event Looping</title>
+     <script>
+         function ClickMe(){
+              var task = new Promise((resolve, reject)=>{
+                   resolve("Third Task");
+              });
+              task.then(msg=>{
+                console.log(msg);
+              })
+
+              console.log("First Task");
+
+              setTimeout(function(){
+                  console.log("Second Task");
+              },0);
+         }
+     </script>
+</head>
+<body>
+     <button onclick="ClickMe()">Click Me</button>
+</body>
+</html>
+```
+
+---
+
+## 8. What is Event Profiling?
+
+* Event profiling is a mechanism of tracking performance of any event in browser debugging tools.
+* Developers can track event log and identify issues in events.
+
+
+**Date:** 19/10/25
+
+
+
+# JavaScript Events  
+
+- **Event**  
+- **Event Handler**  
+- **Event Listener**  
+- **Event Arguments**  
+- **`this` & `event`**  
+- **Custom Arguments**  
+- **Event Propagation / Bubbling**  
+- **Prevent Default**  
+- **Event Loop**  
+- **Event Profiling**  
+
+---
+
+# React Event Binding  
+
+- JavaScript events are **browser events**.  
+- Events are configured using browser **`window`** object.  
+- React cannot directly use browser events.  
+- React uses **`SyntheticEvents`** library, which provides events for the Virtual DOM.  
+- `SyntheticEvent` maps to the browser event in the actual DOM.  
+
+| Actual DOM Event | Synthetic Event |
+|------------------|-----------------|
+| `onclick`        | `onClick`       |
+| `onchange`       | `onChange`      |
+| `ondblclick`     | `onDoubleClick` |
+| `onblur`         | `onBlur`        |
+| etc..            | etc..           |
+
+- Event uses a delegate mechanism to notify subscribers.  
+
+### Example Syntax  
+```jsx
+function handleInsertClick() {
+}
+
+<button onClick={ handleInsertClick }> Insert </button>
+````
+
+---
+
+## Event Argument in React
+
+* React event handler provides only **event** as default argument (implicitly configured).
+
+```jsx
+function handleInsertClick(e) {
+}
+
+<button onClick={ handleInsertClick }>
+```
+
+* The default event argument can handle both element and event details:
+
+```js
+e.clientX 
+e.keyCode
+e.target.id
+e.target.name
+```
+
+### Example
+
+```jsx
+// event-binding.jsx
+export function EventBinding(){
+    function handleInsertClick(e){
+        console.log(`Button Value : ${e.target.value}\nButton Class : ${e.target.className}\nX Position : ${e.clientX}`);
+    }
+
+    return(
+        <div className="p-4">
+            <button value="Insert" className="btn btn-primary" onClick={handleInsertClick}>Insert</button>
+        </div>
+    )
+}
+```
+
+---
+
+## Custom Arguments
+
+* Custom arguments are configured by using a **new function** that executes on event trigger.
+* This allocates a new memory and loads the custom arguments.
+
+### Syntax
+
+```jsx
+<button onClick={ () => { handleInsertClick(arg1, arg2, arg3) } }> 
+
+function handleInsertClick(param1, param2, param3) {
+}
+
+function handleInsertClick(...params) {
+}
+```
+
+* Event handler with **both default and custom arguments**:
+
+```jsx
+<button onClick={ (event) => { handleInsertClick(arg1, arg2, event) } }>
+
+function handleInsertClick(param1, param2, e) {
+}
+```
+
+📌 Note: `"event"` is just a formal name, which refers to the event argument.
+
+### Example
+
+```jsx
+export function EventBinding(){
+    function handleInsertClick(id, name, cities, e){
+        console.log(`id=${id}\nname=${name}\ncities=${cities}`);
+        console.log(`${e.target.value}\n${e.clientX}`);
+    }
+
+    return(
+        <div className="p-4">
+            <button value="Insert" className="btn btn-primary" 
+                onClick={(event)=>{handleInsertClick(1, 'TV', ['Delhi', 'Hyd'], event)}}>Insert</button>
+        </div>
+    )
+}
+```
+
+---
+
+## Event for Two-Way Binding
+
+* JavaScript can use various events to detect value changes and update source.
+* React supports two-way binding only using **`onChange`** event.
+* If `onChange` is not configured, the input is **read-only**.
+
+### Syntax
+
+```jsx
+<input type="text" onChange={ handleNameChange } />
+<select onChange={ handleCityName } />
+
+function handleNameChange(e){
+    e.target.value;   // access element value
+}
+```
+
+### Example
+
+```jsx
+import { useState } from "react"
+
+export function EventBinding(){
+    const [user, setUser] = useState('John');
+   
+    function handleNameChange(e){
+        setUser(e.target.value);
+    }
+
+    return(
+        <div className="p-4">
+            <input type="text" onChange={handleNameChange} value={user} />
+            <p> {user} </p>
+        </div>
+    )
+}
+```
+
+---
+
+# Synthetic Events
+
+* **`SyntheticEvent`** is the base for all events in React Virtual DOM.
+* Categories:
+
+  1. Mouse Events
+  2. Keyboard Events
+  3. Button Events
+  4. Clipboard Events
+  5. Element State Events
+  6. Timer Events
+  7. Touch Events
+  8. Form Events
+
+### Mouse Events
+
+* `onMouseOver`
+* `onMouseOut`
+* `onMouseDown`
+* `onMouseUp`
+* `onMouseMove`
+
+---
+
+## Example: Mouse Over Preview
+
+### 1. `public/mobiles.json`
+
+```json
+[
+    { "img_src": "iphone-green.jpg" },
+    { "img_src": "iphone-pink.png" },
+    { "img_src": "iphone-purple.jpg" },
+    { "img_src": "iphone-white.png" }
+]
+```
+
+### 2. `components/event-binding.jsx`
+
+```jsx
+import axios from "axios";
+import { useEffect, useState } from "react"
+import './event-binding.css';
+
+export function EventBinding(){
+    const [mobiles, setMobiles] = useState([{img_src:null}]);
+    const [preview, setPreivew] = useState('iphone-green.jpg');
+
+    function LoadMobiles(){
+        axios.get("mobiles.json")
+        .then(response=>{
+             setMobiles(response.data);
+        })
+    }
+
+    useEffect(()=>{
+        LoadMobiles();
+    },[])
+
+    function handleMouseOver(e){
+        setPreivew(e.target.src);
+    }
+
+    return(
+        <div className="p-4">
+           <div className="row">
+                <div className="col-2">
+                    {
+                        mobiles.map((mobile, index)=>
+                            <div className="my-4" key={index}>
+                                <img className="border-style" 
+                                    onMouseOver={handleMouseOver} 
+                                    src={mobile.img_src} 
+                                    width="50" height="50" />
+                            </div>
+                        )
+                    }
+                </div>
+                <div className="col-10">
+                    <img width="400" height="400" src={preview} />
+                </div>
+           </div>
+        </div>
+    )
+}
+```
+
+### 3. `components/event-binding.css`
+
+```css
+.border-style {
+    border: 2px solid gray;
+    padding: 10px;
+}
+.border-style:hover {
+    border: 2px solid blue;
+    padding: 10px;
+    cursor: grab;
+}
+```
+
+
+
+---
+
+**Date:** 22/10/25
+
+
+
+# Synthetic Events  
+
+## Mouse Events  
+- **onMouseOver**  
+- **onMouseOut**  
+- **onMouseDown**  
+- **onMouseUp**  
+- **onMouseMove**  
+
+---
+
+# CSS Keyframes  
+
+- Allow configuring **custom animation** for elements.  
+- A keyframe has an **initial state**, **final state**, and **break points**.  
+
+### Syntax  
+```css
+@keyframes Name {
+    from { initial state }   /* or 1% { } */
+    20% { }
+    80% { }
+    to { final state }       /* or 100% { } */
+}
+````
+
+---
+
+# CSS Animation Attributes
+
+* Animation attributes are required to configure effects with keyframes.
+
+a) **animation-name** → Refers to keyframe name
+b) **animation-duration** → Total time for animation
+c) **animation-delay** → Delay before start
+d) **animation-iteration-count** → Number of loops
+e) **animation-direction** → Reverse animation if needed
+f) **animation-timing-function** → Pre-defined styles (`ease-in`, `ease-out`, `linear`, `steps`)
+
+📌 Note: In React, animation attributes use **camelCase**.
+
+### Syntax in React
+
+```jsx
+<img style={{ animationName: 'name', animationDuration: '5s' }} />
+```
+
+---
+
+## Example: Mouse Down & Mouse Up
+
+### 1. `mouse-demo.css`
+
+```css
+@keyframes Spin {
+    from {
+        transform: rotate(0deg) scale(1);
+    }
+    to {
+        transform: rotate(360deg) scale(2);
+    }
+}
+```
+
+### 2. `mouse-demo.jsx`
+
+```jsx
+import { useState } from 'react';
+import './mouse-demo.css';
+
+export function MouseDemo(){
+    const [animationObject, setAnimationObject] = useState({
+        animationName: 'Spin',
+        animationDuration: '5s',
+        animationIterationCount: 'infinite',
+        animationTimingFunction: 'linear'
+    });
+
+    function handleMouseUp(){
+        setAnimationObject({
+            animationName: 'Spin',
+            animationDuration: '5s',
+            animationIterationCount: 'infinite',
+            animationTimingFunction: 'linear'
+        });
+    }
+
+    function handleMouseDown(){
+        setAnimationObject({
+            animationName: 'Spin',
+            animationDuration: '1s',
+            animationIterationCount: 'infinite',
+            animationTimingFunction: 'linear'
+        });
+    }
+
+    return(
+        <div className="container-fluid d-flex justify-content-center align-items-center" style={{height:'100vh'}}>
+            <img onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} src='react.svg' style={animationObject} width="200" height="200" />
+        </div>
+    )
+}
+```
+
+---
+
+## Example: Mouse Move
+
+### `mouse-move.jsx`
+
+```jsx
+import { useState } from "react"
+
+export function MouseMove(){
+    const [styleObj, setStyleObject] = useState({});
+
+    function handleMouseMove(e){
+        setStyleObject({
+            position: 'fixed',
+            left: e.clientX + 'px',
+            top: e.clientY + 'px'
+        });
+    }
+
+    return(
+        <div className="p-3" onMouseMove={handleMouseMove}>
+            <div style={{height:'1000px'}}>
+                <p className="fs-3">Move mouse pointer to test</p>
+            </div>
+            <img width="50" style={styleObj} height="50" src="flag.gif" />
+        </div>
+    )
+}
+```
+
+---
+
+# Keyboard Events
+
+* **onKeyUp**
+* **onKeyDown**
+* **onKeyPress**
+
+### Notes
+
+* `onKeyUp` & `onKeyDown` → handle input characters.
+* `onKeyPress` → handles input char code.
+* ⚠️ **KeyPress is deprecated** in React (use `onKeyUp` / `onKeyDown` instead with `charCode`).
+
+---
+
+## Example: User ID Validation
+
+### 1. `public/users.json`
+
+```json
+[
+    { "user_id": "john" },
+    { "user_id": "john12" },
+    { "user_id": "john_nit" },
+    { "user_id": "david" }
+]
+```
+
+### 2. `key-demo.jsx`
+
+```jsx
+import axios from "axios";
+import { useEffect, useState } from "react"
+
+export function KeyDemo(){
+    const [users, setUsers] = useState([{user_id:null}]);
+    const [msg, setMsg] = useState('');
+    const [errorClass, setErrorClass] = useState('');
+
+    function LoadUsers(){
+        axios.get("users.json")
+        .then(response=>{
+            setUsers(response.data);
+        });
+    }
+
+    useEffect(()=>{
+        LoadUsers();
+    },[]);
+    
+    function VerifyUser(e){
+        for (let user of users){
+            if(user.user_id === e.target.value){
+                setMsg('User Id Taken - Try Another');
+                setErrorClass('text-danger');
+                return;
+            }
+        }
+        setMsg('User Id Available');
+        setErrorClass('text-success');
+    }
+
+    return(
+        <div className="p-3">
+            <h3>Register User</h3>
+            <dl>
+                <dt>User Id</dt>
+                <dd><input type="text" onKeyUp={VerifyUser} /></dd>
+                <dd className={errorClass}>{msg}</dd>
+            </dl>
+        </div>
+    )
+}
+```
